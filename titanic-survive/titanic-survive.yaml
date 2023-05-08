@@ -1,0 +1,98 @@
+schemaVersion: 2
+meta:
+  sourceVersionId: 53299d32-9e64-4a0a-a646-3637e6c9349d # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  description: ""
+  projectId: dc68eb1d-ad8f-4432-9689-4fda6160462b # DO NOT CHANGE - Unique ID of the project from which this file was generated
+  title: titanic survive
+  timezone: null
+  appTheme: SYS_PREF
+  codeLanguage: PYTHON
+  status: null
+  categories: []
+  castDecimalsDefault: true
+  logicQueryCacheTimeout: null
+  publishedQueryCacheTimeout: null
+projectAssets:
+  dataConnections: []
+  envVars: []
+  secrets: []
+sharedAssets:
+  secrets: []
+  vcsPackages: []
+  dataConnections: []
+cells:
+  - cellType: CODE
+    cellId: 0729add4-d23a-4069-9706-843ff68aaceb # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: |-
+        import pandas as pd
+        train = pd.read_csv("train.tsv", sep="\t", index_col=0) # 学習用データ
+        test = pd.read_csv("test.tsv", sep="\t", index_col=0)   # 評価用データ
+        sample_submit = pd.read_csv("sample_submit.tsv", sep="\t", index_col=0, header=None) # 応募用サンプルファイル
+  - cellType: CODE
+    cellId: efbd2df8-c810-41c8-9d70-54c0f2f89843 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: train.head()
+  - cellType: CODE
+    cellId: aa64e5cc-77d3-4ab1-98a3-f40576ef5341 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: train['survived'].value_counts()
+  - cellType: CODE
+    cellId: 9f16722f-460f-491c-8e2e-d98ab8814036 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: |-
+        train = train[["survived","sibsp", "parch", "fare"]]
+        test = test[["sibsp", "parch", "fare"]]
+  - cellType: CODE
+    cellId: dd5f97db-24a5-4bc7-96c3-c7403ed4a68f # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: |-
+        y = train["survived"] # 目的変数
+        X = train.drop(["survived"], axis=1) # 目的変数を除いたデータ
+  - cellType: CODE
+    cellId: d9021eaf-d92e-434a-84c8-85065dc3cabe # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: |-
+        from sklearn.linear_model import LogisticRegression
+        model = LogisticRegression()
+        model.fit(X, y)
+  - cellType: CODE
+    cellId: e2faee5f-3ca5-4640-9ddb-1c244ba50ae3 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: "pred = model.predict_proba(test)[:, 1] "
+  - cellType: CODE
+    cellId: b395c2b8-968f-4921-881c-0141e5001c1b # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: print(pred[:5])
+  - cellType: CODE
+    cellId: e5b16a8a-7fcc-468d-bd97-c7360ca9d658 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: |-
+        sample_submit[1] = pred
+        sample_submit.to_csv('submit.tsv', header=None, sep='\t')
+  - cellType: CODE
+    cellId: 35236547-9816-458f-b633-00fee8ce07ba # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    config:
+      source: ""
+appLayout:
+  fullWidth: false
+  visibleMetadataFields:
+    - NAME
+    - DESCRIPTION
+    - AUTHOR
+    - LAST_EDITED
+    - LAST_RUN
+    - CATEGORIES
+    - STATUS
+    - TABLE_OF_CONTENTS
+  rows: []
